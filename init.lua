@@ -23,28 +23,6 @@ if not pcall(require, "lazy") then
   vim.cmd.quit()
 end
 
-if vim.g.neovide then
-  -- vim.o.guifont = "JetBrainsMono Nerd Font:h18:i"
-  vim.o.guifont = "FiraCode Nerd Font:h17"
-  vim.g.neovide_hide_mouse_when_typing = true
-  vim.g.neovide_cursor_vfx_mode = "railgun"
-  vim.g.neovide_cursor_trail_size = 0.7
-  vim.g.neovide_cursor_vfx_particle_speed = 8.0
-  vim.g.neovide_cursor_vfx_particle_phase = 3
-  vim.g.neovide_cursor_vfx_particle_curl = 1.3
-  vim.g.neovide_cursor_vfx_particle_lifetime = 1.0
-  vim.g.neovide_scale_factor = 1
-  local change_scale_factor = function(delta) vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta end
-  vim.keymap.set("n", "<C-=>", function() change_scale_factor(1.1) end)
-  vim.keymap.set("n", "<C-->", function() change_scale_factor(1 / 1.1) end)
-  vim.keymap.set("n", "<D-s>", ":w<CR>")
-  vim.keymap.set("v", "<D-c>", '"+y')
-  vim.keymap.set("n", "<D-v>", '"P')
-  vim.keymap.set("v", "<D-v", '"+P')
-  vim.keymap.set("c", "<D-v>", "<C-R>+")
-  vim.keymap.set("i", "<C-v>", '<ESC>l"+Pli')
-end
-
 vim.cmd "set clipboard=unnamedplus"
 --vim.cmd "colo tokyonight"
 require "lazy_setup"
