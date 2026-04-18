@@ -2,11 +2,15 @@ local map = vim.keymap.set
 
 -- Increment and Decrement numbers
 map("n", "<leader>]", "<C-a>", { desc = "Increment number" })
-map("n", "<leader>[", "<C-x>", { desc = "decrement number" })
+map("n", "<leader>[", "<C-x>", { desc = "Decrement number" })
 
 -- Disable/enable annoying lsp warnings
 map("n", ",d", "<cmd>lua vim.diagnostic.enable(false)<CR>", { desc = "Disable annoying diagnostics" })
 map("n", ",D", "<cmd>lua vim.diagnostic.enable(true)<CR>", { desc = "Enable annoying diagnostics when needed" })
+
+-- scrolling and centering content in one go
+map("n", "<C-d>", "<C-d>zz", { desc = "Scroll and center content DOWNWARD" })
+map("n", "<C-u>", "<C-u>zz", { desc = "Scroll and center content UPWARDS" })
 
 -- Control splits
 map("n", ",,", "<C-w>w", { desc = "Cycle between splits" })
@@ -64,8 +68,8 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "rust" },
   callback = function()
     vim.schedule(function()
-      map("i", ";;", "<ESC>A;<ESC>o")
-      map("i", "..", "::")
+      map("i", ";;", "<ESC>A;")
+      -- map("i", "..", "::")
       map("n", ",c", "<cmd>Cargo check<CR>", { desc = "Run Cargo Check on Rust file" })
       map("n", ",r", "<cmd>Cargo run<CR>", { desc = "Run Rust file" })
       map("n", ",b", "<cmd>Cargo build<CR>", { desc = "Build Rust project" })
