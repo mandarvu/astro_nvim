@@ -105,27 +105,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Copilot specific keymaps
--- Quick chat keybinding
-map("n", "<leader>aq", function()
-  local input = vim.fn.input "Quick Chat: "
-  if input ~= "" then require("CopilotChat").ask(input, {
-    selection = require("CopilotChat.select").buffer,
-  }) end
-end, { desc = "CopilotChat - Quick chat" })
-map("n", "<leader>aa", "<cmd>CopilotChatToggle<CR>", { desc = "CopilotChat Toggle" })
-map("i", "<C-l>", 'copilot#Accept("\\<CR>")', {
-  expr = true,
-  replace_keycodes = false,
-  desc = "Accept Copilot suggestion",
-})
-map("i", "<C-i>", 'copilot#Accept("\\<CR>")', {
-  expr = true,
-  replace_keycodes = false,
-  desc = "Accept Copilot suggestion",
-})
-vim.g.copilot_no_tab_map = true
-
 -- Tex specific keymaps
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "tex" },

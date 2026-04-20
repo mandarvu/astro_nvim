@@ -45,6 +45,7 @@ return {
         spell = false, -- sets vim.opt.spell
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
+        exrc = true, -- Allows Neovim to read local .nvim.lua files
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)

@@ -40,11 +40,24 @@ return {
     -- enable servers that you already have installed without mason
     servers = {
       -- "pyright"
+      "postgres_lsp",
     },
     -- customize language server configuration passed to `vim.lsp.config`
     -- client specific configuration can also go in `lsp/` in your configuration root (see `:h lsp-config`)
     config = {
       -- ["*"] = { capabilities = {} }, -- modify default LSP client settings such as capabilities
+      postgres_lsp = {
+        -- Added explicit type annotations to satisfy LuaLS
+        -- ---@param fname string
+        -- ---@return string|nil
+        -- root_dir = function(fname)
+        --   -- Neovim 0.10+ native way to find the project root
+        --   local root = vim.fs.root(fname, { ".git", ".env", ".postgres_lsp.json" })
+        --
+        --   -- Neovim 0.10+ native way to get the directory name
+        --   return root or vim.fs.dirname(fname)
+        -- end,
+      },
     },
     -- customize how language servers are attached
     handlers = {
@@ -53,6 +66,7 @@ return {
 
       -- the key is the server that is being setup with `vim.lsp.config`
       rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
+      sqls = false,
     },
     -- Configure buffer local auto commands to add when attaching a language server
     autocmds = {

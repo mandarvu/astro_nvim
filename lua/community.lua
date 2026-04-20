@@ -8,6 +8,7 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
+  { import = "astrocommunity.pack.sql" },
   -- { import = "astrocommunity.register.nvim-neoclip-lua" },
   { import = "astrocommunity.bars-and-lines.dropbar-nvim" },
   -- { import = "astrocommunity.recipes.telescope-nvchad-theme" },
