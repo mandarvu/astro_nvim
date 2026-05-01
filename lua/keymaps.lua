@@ -1,5 +1,7 @@
 local map = vim.keymap.set
 
+map("n", "<leader>h", "<CMD>Alpha<CR>")
+
 -- Increment and Decrement numbers
 map("n", "<leader>]", "<C-a>", { desc = "Increment number" })
 map("n", "<leader>[", "<C-x>", { desc = "Decrement number" })
@@ -100,7 +102,8 @@ vim.api.nvim_create_autocmd("FileType", {
       map("i", "z ", "<ESC>A")
       map("i", ";'", "<ESC>o")
       map("i", "<<", "<-")
-      map("i", "<C-=>", ":=")
+      map("i", "<C-=>", ":= ")
+      map("i", "<C-->", "!= ")
     end)
   end,
 })
