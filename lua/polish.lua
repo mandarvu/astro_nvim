@@ -8,7 +8,7 @@ vim.cmd "colo astrodark"
 -- vim.cmd "colo catppuccin-mocha"
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "rust", "python", "go", "c", "cpp" },
+  pattern = { "rust", "python", "go", "c", "cpp", "sql" },
   callback = function()
     vim.schedule(function() vim.cmd "set tabstop=4 shiftwidth=4 expandtab autoindent" end)
   end,
