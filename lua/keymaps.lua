@@ -124,7 +124,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.schedule(function()
       -- map("i", "mm", "$$<ESC>i", { desc = "Enter math mode without leaving the insert mode in Markdown" })
-      map("i", ";;", "<br><ESC>o")
+      -- map("i", ";;", "<br><ESC>o")
     end)
   end,
 })

@@ -1,3 +1,5 @@
+if true then return {} end
+
 return {
   "milanglacier/minuet-ai.nvim",
   event = "InsertEnter",
