@@ -181,14 +181,15 @@ map("n", "<leader>tt", "<cmd>TodoTelescope<CR>", { desc = "Search for TODO comme
 -- Rust specific keymaps
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "rust" },
-  callback = function()
+  callback = function(args)
+    local opts = { buffer = args.buf }
     vim.schedule(function()
-      map("i", ";;", "<ESC>A;")
+      map("i", ";;", "<ESC>A;", opts)
       -- map("i", "..", "::")
-      map("n", ",c", "<cmd>Cargo check<CR>", { desc = "Run Cargo Check on Rust file" })
-      map("n", ",r", "<cmd>Cargo run<CR>", { desc = "Run Rust file" })
-      map("n", ",b", "<cmd>Cargo build<CR>", { desc = "Build Rust project" })
-      map("n", ",f", "<cmd>RustFmt<CR>", { desc = "Format Rust file" })
+      map("n", ",c", "<cmd>Cargo check<CR>", vim.tbl_extend("force", opts, { desc = "Run Cargo Check on Rust file" }))
+      map("n", ",r", "<cmd>Cargo run<CR>", vim.tbl_extend("force", opts, { desc = "Run Rust file" }))
+      map("n", ",b", "<cmd>Cargo build<CR>", vim.tbl_extend("force", opts, { desc = "Build Rust project" }))
+      map("n", ",f", "<cmd>RustFmt<CR>", vim.tbl_extend("force", opts, { desc = "Format Rust file" }))
     end)
   end,
 })
@@ -196,13 +197,14 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Python specific keymaps
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "python" },
-  callback = function()
+  callback = function(args)
+    local opts = { buffer = args.buf }
     vim.schedule(function()
-      map("i", ";;", "<ESC>A")
-      map("i", ";'", "<ESC>o")
-      map("n", "<leader>r", "<cmd>w|!python3 %<CR>", { desc = "Save and run Python script" })
-      map("n", ",f", "<cmd>Format<CR>", { desc = "Format Python script" })
-      map("n", "<leader>w", "<cmd>w|!ruff format %<CR><CR>", { desc = "Save and Format python file with Ruff" })
+      map("i", ";;", "<ESC>A", opts)
+      map("i", ";'", "<ESC>o", opts)
+      map("n", "<leader>r", "<cmd>w|!python3 %<CR>", vim.tbl_extend("force", opts, { desc = "Save and run Python script" }))
+      map("n", ",f", "<cmd>Format<CR>", vim.tbl_extend("force", opts, { desc = "Format Python script" }))
+      map("n", "<leader>w", "<cmd>w|!ruff format %<CR><CR>", vim.tbl_extend("force", opts, { desc = "Save and Format python file with Ruff" }))
     end)
   end,
 })
@@ -210,13 +212,14 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Go specific keymaps
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "go" },
-  callback = function()
+  callback = function(args)
+    local opts = { buffer = args.buf }
     vim.schedule(function()
-      map("i", "z ", "<ESC>A")
-      map("i", ";'", "<ESC>o")
-      map("i", "<<", "<-")
-      map("i", "<C-=>", ":= ")
-      map("i", "<C-->", "!= ")
+      map("i", "z ", "<ESC>A", opts)
+      map("i", ";'", "<ESC>o", opts)
+      map("i", "<<", "<-", opts)
+      map("i", "<C-=>", ":= ", opts)
+      map("i", "<C-->", "!= ", opts)
     end)
   end,
 })
@@ -224,10 +227,11 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Tex specific keymaps
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "tex" },
-  callback = function()
+  callback = function(args)
+    local opts = { buffer = args.buf }
     -- vim.schedule(function() map("i", "mm", "$$<ESC>i") end)
-    map("i", ";;", "<ESC>A")
-    map("n", "<leader>w", "<cmd>w|!tex-fmt %<CR><CR>", { desc = "Format the LaTex Source File" })
+    map("i", ";;", "<ESC>A", opts)
+    map("n", "<leader>w", "<cmd>w|!tex-fmt %<CR><CR>", vim.tbl_extend("force", opts, { desc = "Format the LaTex Source File" }))
   end,
 })
 

@@ -19,7 +19,14 @@ config = {
       },
     },
   },
-  opts = {},
+  opts = {
+    options = {
+      picker = "snacks",
+      notify_user_on_venv_activation = true,
+      activate_venv_in_terminal = true,
+      set_environment_variables = true,
+    },
+  },
   cmd = "VenvSelect",
 }
 
