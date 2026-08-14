@@ -4,6 +4,9 @@ return {
   opts = {
     -- add any options here
     lsp = {
+      progress = {
+        enabled = false,
+      },
       hover = {
         enabled = false,
       },

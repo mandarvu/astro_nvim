@@ -42,6 +42,13 @@ return {
         }
       end,
     },
+    status = {
+      components = {
+        lsp = {
+          lsp_progress = false,
+        },
+      },
+    },
     -- Icons can be configured throughout the interface
     icons = {
       ActiveLSP = "",
