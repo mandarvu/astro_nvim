@@ -1,6 +1,6 @@
 -- Keymaps for vscode-neovim. Plugin-specific bindings (Snacks, smart-splits,
 -- noice, ZenMode, etc.) replaced with vscode.action commands. Buffer-editing
--- keys (move lines, escape, hop, dial) preserved.
+-- keys (move lines, escape, dial) preserved.
 
 local map = vim.keymap.set
 local ok, vscode = pcall(require, "vscode")
@@ -52,12 +52,6 @@ map("n", "<leader>zz", act "workbench.action.toggleMaximizeEditorGroup", { desc 
 
 -- Easy escape
 map("i", "jk", "<ESC>", { desc = "Escape insert" })
-
--- Hop (still useful inside the buffer)
-map("n", "<leader>sc", "<cmd>HopChar2<CR>", { desc = "Hop 2 chars" })
-map("n", "<leader>ss", "<cmd>HopWord<CR>", { desc = "Hop word" })
-map("n", "<leader>sa", "<cmd>HopAnywhere<CR>", { desc = "Hop anywhere" })
-map("n", "<leader>sl", "<cmd>HopAnywhereCurrentLine<CR>", { desc = "Hop on line" })
 
 -- Insert datetime
 map("n", "<M-t>", "<cmd>pu=strftime('%d/%m/%y %H:%M:%S')<CR>", { desc = "Insert datetime" })

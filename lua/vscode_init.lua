@@ -39,12 +39,6 @@ require("lazy").setup({
     keys = { "<C-a>", "<C-x>", { "<C-a>", mode = "v" }, { "<C-x>", mode = "v" } },
   },
   {
-    "smoka7/hop.nvim",
-    version = "*",
-    cmd = { "HopWord", "HopChar2", "HopAnywhere", "HopAnywhereCurrentLine", "HopAnywhereMW" },
-    opts = { keys = "etovxqpdygfblzhckisuran" },
-  },
-  {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {

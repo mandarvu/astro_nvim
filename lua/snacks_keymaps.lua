@@ -6,7 +6,7 @@ map("n", "<leader><space>", Snacks.picker.smart, { desc = "Smart Find Files" })
 map("n", "<leader>,", Snacks.picker.buffers, { desc = "Buffers" })
 map("n", ",.", Snacks.picker.grep, { desc = "Grep" })
 map("n", "<leader>:", Snacks.picker.command_history, { desc = "Command History" })
-map("n", "<leader>n", Snacks.picker.notifications, { desc = "Notification History" })
+map("n", "<leader>n", "<cmd>Noice history<CR>", { desc = "Notification History" })
 map("n", "<leader>e", "<cmd> lua Snacks.explorer()<CR>", { desc = "File Explorer" })
 
 -- Snacks find keymaps
@@ -73,7 +73,6 @@ map("n", "<leader>lS", Snacks.picker.lsp_workspace_symbols, { desc = "LSP Worksp
 map("n", "<leader>.", function() Snacks.scratch() end, { desc = "Scratch Buffer" })
 map("n", "<leader>S", function() Snacks.scratch.select() end, { desc = "Scratch Buffer" })
 
-map("n", "<leader>n", Snacks.notifier.show_history, { desc = "Notification History" })
-map("n", "<leader>un", Snacks.notifier.hide, { desc = "Dismiss All Notifications" })
+map("n", "<leader>un", "<cmd>Noice dismiss<CR>", { desc = "Dismiss All Notifications" })
 
 map("n", "<leader>as", Snacks.picker.spelling, { desc = "Spelling Suggestions" })

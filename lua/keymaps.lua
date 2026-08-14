@@ -1,5 +1,121 @@
 local map = vim.keymap.set
 
+local function select_enclosing_delimiter(visual)
+  local pairs = {
+    { open = "(", close = ")", nested = true },
+    { open = "[", close = "]", nested = true },
+    { open = "{", close = "}", nested = true },
+    { open = "<", close = ">", nested = true },
+    { open = '"', close = '"', nested = false },
+    { open = "'", close = "'", nested = false },
+    { open = "`", close = "`", nested = false },
+  }
+
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  if vim.tbl_isempty(lines) then return end
+
+  local line_starts = {}
+  local offset = 0
+  for i, line in ipairs(lines) do
+    line_starts[i] = offset
+    offset = offset + #line + 1
+  end
+
+  local function abs_pos(line, col)
+    if not line or line < 1 or not line_starts[line] then return nil end
+    return line_starts[line] + col
+  end
+
+  local function line_col(abs)
+    for line = #line_starts, 1, -1 do
+      if abs >= line_starts[line] then return line, abs - line_starts[line] end
+    end
+    return 1, 0
+  end
+
+  local start_abs
+  local end_abs
+
+  if visual then
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    local anchor = vim.fn.getpos "v"
+    local selection_start = vim.fn.getpos "'<"
+    local selection_end = vim.fn.getpos "'>"
+    local cursor_abs = abs_pos(cursor[1], cursor[2])
+    local anchor_abs = abs_pos(anchor[2], anchor[3] - 1)
+
+    if cursor_abs and anchor_abs then
+      start_abs = math.min(cursor_abs, anchor_abs)
+      end_abs = math.max(cursor_abs, anchor_abs)
+    else
+      start_abs = abs_pos(selection_start[2], selection_start[3] - 1)
+      end_abs = abs_pos(selection_end[2], selection_end[3] - 1)
+    end
+  else
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    start_abs = abs_pos(cursor[1], cursor[2])
+    end_abs = start_abs
+  end
+  if not start_abs or not end_abs then return end
+
+  local candidates = {}
+  local function add_candidate(open_abs, close_abs)
+    local inner_start = open_abs + 1
+    local inner_end = close_abs - 1
+    if inner_start <= start_abs and inner_end >= end_abs and (inner_start < start_abs or inner_end > end_abs) then
+      table.insert(candidates, { start_abs = inner_start, end_abs = inner_end, size = close_abs - open_abs })
+    end
+  end
+
+  local quote_open = {}
+  local stacks = {}
+  for _, pair in ipairs(pairs) do
+    if pair.nested then stacks[pair.open] = {} end
+  end
+
+  for line_nr, line in ipairs(lines) do
+    local i = 1
+    while i <= #line do
+      local char = line:sub(i, i)
+      local current_abs = abs_pos(line_nr, i - 1)
+
+      for _, pair in ipairs(pairs) do
+        if pair.nested then
+          if char == pair.open then
+            table.insert(stacks[pair.open], current_abs)
+          elseif char == pair.close then
+            local open_abs = table.remove(stacks[pair.open])
+            if open_abs then add_candidate(open_abs, current_abs) end
+          end
+        elseif char == pair.open then
+          local escaped = i > 1 and line:sub(i - 1, i - 1) == "\\"
+          if not escaped then
+            if quote_open[pair.open] then
+              add_candidate(quote_open[pair.open], current_abs)
+              quote_open[pair.open] = nil
+            else
+              quote_open[pair.open] = current_abs
+            end
+          end
+        end
+      end
+
+      i = i + 1
+    end
+  end
+
+  if vim.tbl_isempty(candidates) then return end
+
+  table.sort(candidates, function(a, b) return a.size < b.size end)
+  local target = candidates[1]
+  local start_line, start_col = line_col(target.start_abs)
+  local end_line, end_col = line_col(target.end_abs)
+
+  vim.fn.setpos("'<", { 0, start_line, start_col + 1, 0 })
+  vim.fn.setpos("'>", { 0, end_line, end_col + 1, 0 })
+  vim.cmd "normal! gv"
+end
+
 map("n", "<leader>h", "<CMD>Alpha<CR>")
 
 -- Increment and Decrement numbers
@@ -40,12 +156,9 @@ map("n", "<leader>zz", "<cmd>WindowsMaximize<CR>", { desc = "Toggle Maximize win
 -- Easy escape from insert mode
 map("i", "jk", "<ESC>", { desc = "Escape Insert mode" })
 
--- hopping around in the visible window
-map("n", "<leader>sc", "<cmd>HopChar2<CR>", { desc = "Hop 2 characters" })
-map("n", "<leader>ss", "<cmd>HopWord<CR>", { desc = "Hop word" })
-map("n", "<leader>sa", "<cmd>HopAnywhere<CR>", { desc = "Hop anywhere in current window" })
-map("n", "<leader>se", "<cmd>HopAnywhereMW<CR>", { desc = "Hop anywhere in any window" })
-map("n", "<leader>sl", "<cmd>HopAnywhereCurrentLine<CR>", { desc = "Hop anywhere on current line" })
+-- select and expand around enclosing delimiters
+map("n", "<leader>v", function() select_enclosing_delimiter(false) end, { desc = "Select enclosing delimiter" })
+map("x", "<leader>v", function() select_enclosing_delimiter(true) end, { desc = "Expand enclosing delimiter" })
 
 -- insert date and time
 map("n", "<M-t>", "<cmd>pu=strftime('%d/%m/%y %H:%M:%S')<CR>", { desc = "Insert date and time in normal mode" })
