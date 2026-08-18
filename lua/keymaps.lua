@@ -156,6 +156,22 @@ map("n", "<leader>zz", "<cmd>WindowsMaximize<CR>", { desc = "Toggle Maximize win
 -- Easy escape from insert mode
 map("i", "jk", "<ESC>", { desc = "Escape Insert mode" })
 
+map({ "i", "s" }, "<Tab>", function()
+  if vim.snippet and vim.snippet.active { direction = 1 } then
+    vim.snippet.jump(1)
+    return
+  end
+
+  local width = vim.fn.shiftwidth()
+  if width == 0 then width = vim.bo.tabstop end
+  local text = vim.bo.expandtab and string.rep(" ", width) or "\t"
+  vim.api.nvim_put({ text }, "c", true, true)
+end, { silent = true, desc = "Tab or snippet jump" })
+
+map({ "i", "s" }, "<S-Tab>", function()
+  if vim.snippet and vim.snippet.active { direction = -1 } then vim.snippet.jump(-1) end
+end, { silent = true, desc = "Shift-Tab or snippet jump" })
+
 -- select and expand around enclosing delimiters
 map("n", "<leader>v", function() select_enclosing_delimiter(false) end, { desc = "Select enclosing delimiter" })
 map("x", "<leader>v", function() select_enclosing_delimiter(true) end, { desc = "Expand enclosing delimiter" })
