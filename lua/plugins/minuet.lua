@@ -25,9 +25,9 @@ return {
       auto_trigger_ft = { "rust", "lua", "python", "javascript", "typescript", "go", "c", "cpp", "sh" },
       show_on_completion_menu = true,
       keymap = {
-        accept = "<C-i>",
-        accept_line = "<C-o>",
-        dismiss = "<C-r>",
+        accept = "<A-o>",
+        accept_line = "<A-i>",
+        dismiss = "<A-e>",
       },
     },
     provider_options = {
