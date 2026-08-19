@@ -156,23 +156,6 @@ map("n", "<leader>zz", "<cmd>WindowsMaximize<CR>", { desc = "Toggle Maximize win
 -- Easy escape from insert mode
 map("i", "jk", "<ESC>", { desc = "Escape Insert mode" })
 
-local function insert_tab_indent()
-  local width = vim.fn.shiftwidth()
-  if width == 0 then width = vim.bo.tabstop end
-  return vim.bo.expandtab and string.rep(" ", width) or "\t"
-end
-
-map({ "i", "s" }, "<Tab>", insert_tab_indent, { expr = true, silent = true, desc = "Insert tab" })
-map({ "i", "s" }, "<C-i>", insert_tab_indent, { expr = true, silent = true, desc = "Insert tab" })
-
-map({ "i", "s" }, "<S-Tab>", function()
-  if vim.snippet and vim.snippet.active { direction = -1 } then
-    vim.snippet.jump(-1)
-    return ""
-  end
-  return ""
-end, { expr = true, silent = true, desc = "Shift-Tab or snippet jump" })
-
 -- select and expand around enclosing delimiters
 map("n", "<leader>v", function() select_enclosing_delimiter(false) end, { desc = "Select enclosing delimiter" })
 map("x", "<leader>v", function() select_enclosing_delimiter(true) end, { desc = "Expand enclosing delimiter" })
@@ -219,9 +202,19 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.schedule(function()
       map("i", ";;", "<ESC>A", opts)
       map("i", ";'", "<ESC>o", opts)
-      map("n", "<leader>r", "<cmd>w|!python3 %<CR>", vim.tbl_extend("force", opts, { desc = "Save and run Python script" }))
+      map(
+        "n",
+        "<leader>r",
+        "<cmd>w|!python3 %<CR>",
+        vim.tbl_extend("force", opts, { desc = "Save and run Python script" })
+      )
       map("n", ",f", "<cmd>Format<CR>", vim.tbl_extend("force", opts, { desc = "Format Python script" }))
-      map("n", "<leader>w", "<cmd>w|!ruff format %<CR><CR>", vim.tbl_extend("force", opts, { desc = "Save and Format python file with Ruff" }))
+      map(
+        "n",
+        "<leader>w",
+        "<cmd>w|!ruff format %<CR><CR>",
+        vim.tbl_extend("force", opts, { desc = "Save and Format python file with Ruff" })
+      )
     end)
   end,
 })
@@ -248,7 +241,12 @@ vim.api.nvim_create_autocmd("FileType", {
     local opts = { buffer = args.buf }
     -- vim.schedule(function() map("i", "mm", "$$<ESC>i") end)
     map("i", ";;", "<ESC>A", opts)
-    map("n", "<leader>w", "<cmd>w|!tex-fmt %<CR><CR>", vim.tbl_extend("force", opts, { desc = "Format the LaTex Source File" }))
+    map(
+      "n",
+      "<leader>w",
+      "<cmd>w|!tex-fmt %<CR><CR>",
+      vim.tbl_extend("force", opts, { desc = "Format the LaTex Source File" })
+    )
   end,
 })
 
