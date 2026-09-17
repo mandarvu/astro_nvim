@@ -11,6 +11,7 @@ return {
   { import = "astrocommunity.pack.biome" },
   { import = "astrocommunity.pack.typescript" },
   { import = "astrocommunity.pack.sql" },
+  { import = "astrocommunity.git.neogit" },
   -- { import = "astrocommunity.register.nvim-neoclip-lua" },
   { import = "astrocommunity.bars-and-lines.dropbar-nvim" },
   -- { import = "astrocommunity.recipes.telescope-nvchad-theme" },
