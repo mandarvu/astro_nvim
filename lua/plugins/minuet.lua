@@ -1,7 +1,11 @@
 return {
   "milanglacier/minuet-ai.nvim",
   event = "InsertEnter",
-  enabled = vim.fn.executable "ollama" == 1,
+  enabled = function()
+    if vim.fn.executable "ollama" ~= 1 then return false end
+    vim.fn.system { "ollama", "list" }
+    return vim.v.shell_error == 0
+  end,
   dependencies = { "nvim-lua/plenary.nvim" },
   keys = {
     { "<Leader>uM", "<Cmd>Minuet virtualtext toggle<CR>", desc = "Toggle Minuet inline suggestions" },
